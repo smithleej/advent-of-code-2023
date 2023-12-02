@@ -7,18 +7,16 @@ fn main() {
 }
 
 enum Cube {
-    Red{value: u32},
-    Green{value:u32},
-    Blue{value:u32},
+    Red { value: u32 },
+    Green { value: u32 },
+    Blue { value: u32 },
 }
 
-fn name_me(parsed_input: &mut impl Iterator<Item = Cube>) -> bool{
-    parsed_input.all(|cube| {
-        match cube {
-            Cube::Red{value} => value <= 12,
-            Cube::Green{value} => value <= 13,
-            Cube::Blue{value} => value <= 14
-        }
+fn name_me(parsed_input: &mut impl Iterator<Item = Cube>) -> bool {
+    parsed_input.all(|cube| match cube {
+        Cube::Red { value } => value <= 12,
+        Cube::Green { value } => value <= 13,
+        Cube::Blue { value } => value <= 14,
     })
 }
 
@@ -35,16 +33,22 @@ fn part1(input: &str) -> u32 {
             .get(1)
             .expect("Didn't find game 2")
             .as_str())
-            .parse::<u32>()
-            .expect("Couldn't parse game");
+        .parse::<u32>()
+        .expect("Couldn't parse game");
 
         let mut input_parsed =
             CUBES_REGEX
                 .captures_iter(line)
                 .map(|mat| match mat.get(2).unwrap().as_str() {
-                    "red" => Cube::Red{value : mat.get(1).unwrap().as_str().parse::<u32>().unwrap()},
-                    "green" => Cube::Green{value: mat.get(1).unwrap().as_str().parse::<u32>().unwrap()},
-                    "blue" => Cube::Blue{value: mat.get(1).unwrap().as_str().parse::<u32>().unwrap()},
+                    "red" => Cube::Red {
+                        value: mat.get(1).unwrap().as_str().parse::<u32>().unwrap(),
+                    },
+                    "green" => Cube::Green {
+                        value: mat.get(1).unwrap().as_str().parse::<u32>().unwrap(),
+                    },
+                    "blue" => Cube::Blue {
+                        value: mat.get(1).unwrap().as_str().parse::<u32>().unwrap(),
+                    },
                     _ => panic!("Unknown colour"),
                 });
 
