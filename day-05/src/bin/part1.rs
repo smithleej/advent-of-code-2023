@@ -9,14 +9,14 @@ use nom::{
 
 #[derive(PartialEq, Debug)]
 struct LineMapping {
-    destination_start: u32,
-    source_start: u32,
-    range_length: u32,
+    destination_start: u64,
+    source_start: u64,
+    range_length: u64,
 }
 
 #[derive(PartialEq, Debug)]
 struct Inputs {
-    seeds: Vec<u32>,
+    seeds: Vec<u64>,
     seeds_to_soil: Vec<LineMapping>,
     soil_to_fertilizer: Vec<LineMapping>,
     fertilizer_to_water: Vec<LineMapping>,
@@ -31,8 +31,8 @@ fn main() {
     dbg!(part1(input));
 }
 
-fn parse_number(input: &str) -> IResult<&str, u32> {
-    map_res(digit1, |s: &str| s.parse::<u32>())(input)
+fn parse_number(input: &str) -> IResult<&str, u64> {
+    map_res(digit1, |s: &str| s.parse::<u64>())(input)
 }
 
 fn parse_input(input: &str) -> IResult<&str, Inputs> {
@@ -204,9 +204,9 @@ fn parse_input(input: &str) -> IResult<&str, Inputs> {
     ))
 }
 
-fn part1(input: &str) -> u32 {
+fn part1(input: &str) -> u64 {
     let (_, inputs) = parse_input(input).unwrap();
-    let map: u32 = inputs.seeds.iter().map(|seed| {
+    let map: u64 = inputs.seeds.iter().map(|seed| {
         let soil_number = get_next_number(&inputs.seeds_to_soil, *seed);
         let fert_number = get_next_number(&inputs.soil_to_fertilizer, soil_number);
         let water_number = get_next_number(&inputs.fertilizer_to_water, fert_number);
@@ -220,7 +220,7 @@ fn part1(input: &str) -> u32 {
     map
 }
 
-fn get_next_number(mappings: &Vec<LineMapping>, seed: u32) -> u32 {
+fn get_next_number(mappings: &Vec<LineMapping>, seed: u64) -> u64 {
     let number = mappings.iter().find(|mapping| {
         if seed >= mapping.source_start && seed < mapping.source_start + mapping.range_length {
             true
