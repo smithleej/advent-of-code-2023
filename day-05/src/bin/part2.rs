@@ -29,7 +29,7 @@ struct Inputs {
 
 fn main() {
     let input = include_str!("./input.txt");
-    part2(input);
+    println!("{}", part2(input));
 }
 
 fn parse_number(input: &str) -> IResult<&str, u64> {
